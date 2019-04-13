@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>approved</title>
+</head>
+<body>
+	<style type="text/css">
+	.button{
+		    background: green;
+           color: white;
+            padding: 20px 32px;
+            margin: 15px 35px;
+            text-align: center;
+            text-decoration: none;
+
+ 
+
+	}
+</style>
+	<button onclick="myreload()" class="button">Restart</button><button onclick="myalert()" class="button">pause</button>
+	<br>
+	<style type="text/css">
+	body{
+		background: #000;
+	}
+	
+		canvas{
+			background: #66ff99;
+
+		}
+	</style>
+	
+	<canvas id="demo" width="1500" height="720"></canvas>
+	<script type="text/javascript">
+		function myalert()
+		{
+			alert("Resume");
+
+
+		}
+		function myreload()
+		{
+			document.location.reload();
+		}
+
+	</script>
+
+	
+	<script type="text/javascript">
+
+		var canvas=document.getElementById("demo");
+		var ctx=canvas.getContext("2d");
+		var rightPressed = false;
+		var leftPressed = false;
+		var dx = -7;
+		var dy = 3;
+      var hit = new Audio();
+	hit.src = "wall.wav"
+	 var back = new Audio();
+	back.src = " Game.wav"
+	 var p = new Audio();
+	p.src = "p.wav"
+ var pass = new Audio();
+	pass.src = "pass.wav"
+ 	const  ball = {
+		x : canvas.width/2,
+		y : canvas.height/2,
+		dx : 5,
+		dy : 5,
+		r : 20
+}
+const user = {
+	x : 0,
+         	y : (canvas.height-75)/2,
+      width : 10,
+      height : 150,
+       color : "WHITE",
+       score : 0
+
+}
+const comp = {
+	x : canvas.width-10,
+	y : (canvas.height-75)/2,
+	 width : 10,
+      height : 150,
+      score : 0
+
+}
+function shrikant()
+{
+	ctx.fillStyle="0095DD";
+	ctx.font = "75px Arial";
+	ctx.fillText("LIFE OF AN ENGINEER",canvas.width/4,canvas.height/8);
+     
+}
+/*function comedy()
+{
+   ctx.fillStyle = "#ff0000";
+   ctx.font = "5px Arial";
+   cx.fillText("IITIAN",ball.x-ball.r,ball.y);
+}*/
+function score()
+{
+	ctx.fillStyle="0095DD";
+	ctx.font = "25px Arials";
+	ctx.fillText("IITIAN",ball.x-ball.r-10,ball.y+ball.r+20);
+	ctx.fillText("M", user.x+user.width+5, user.y);
+	ctx.fillText("I", user.x+user.width+5, user.y+30);
+    ctx.fillText("D", user.x+user.width+5, user.y+60);
+    ctx.fillText("S", user.x+user.width+5, user.y+90); 
+    ctx.fillText("E", user.x+user.width+5, user.y+120);
+    ctx.fillText("M", user.x+user.width+5, user.y+150);
+    //compside
+    ctx.fillText("E", comp.x-25,comp.y);
+    ctx.fillText("N", comp.x-25,comp.y+30);
+    ctx.fillText("D", comp.x-25,comp.y+60);
+    ctx.fillText("S", comp.x-25,comp.y+90);
+    ctx.fillText("E", comp.x-25,comp.y+120);
+    ctx.fillText("M", comp.x-25,comp.y+150);
+    
+	ctx.font = "75px Arials";
+	ctx.fillText(user.score,canvas.width/4,canvas.height/4);
+     ctx.fillText(comp.score,3*canvas.width/4,canvas.height/4);
+}
+function render()
+{
+	back.play();
+	score();
+	shrikant();
+	//comedy();
+	 ctx.beginPath();
+	 ctx.rect(user.x, user.y,  user.width, user.height);
+	 ctx.rect(comp.x, comp.y,  comp.width, comp.height);
+     ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2, false);
+
+        
+  ctx.rect(canvas.width/2, 0, 2, canvas.height);
+  ctx.fillStyle = "#0095DD";
+  ctx.fill();
+  ctx.closePath();
+}
+function reset()
+{
+  ball.x=canvas.width/2;
+  ball.y=canvas.height/2;
+
+}
+
+
+function update()
+{
+    if(rightPressed&&user.y>0)
+    {
+    	user.y -= 7;
+    }
+    if(leftPressed&&user.y+user.height<canvas.height){
+    	user.y += 7;
+    }
+  //  if(ball.x>canvas.width/2)
+   comp.y -= (comp.y+(comp.height)/2 - ball.y);     //SIMPLE AI0.01
+
+ball.x += dx;
+ball.y += dy;
+if(ball.y+ball.r>canvas.height||ball.y-ball.r<0){
+dy=-dy;
+hit.play();
+//if()
+}
+
+if(collision1()||collision2()){
+dx=-(dx*1.05);
+p.play();
+}
+if(ball.x+ball.r+50<0){
+	comp.score++;dx=7;
+pass.play();
+reset();
+
+}
+else if(ball.x-ball.r-50>canvas.width)
+{
+	user.score++;dx=7;
+	pass.play();
+reset();
+}
+if(comp.score>=5&&comp.score>=user.score+2)
+{
+	alert("YOU LOSE    want to play again");
+	document.location.reload();
+      clearInterval(interval); 
+}
+else if(user.score>=5&&user.score>=comp.score+2)
+{
+	alert("YOU WIN");
+	document.location.reload();
+      clearInterval(interval); 
+}
+
+}
+function collision1()
+{
+   return user.y<=ball.y+ball.r&&user.y+user.height>ball.y-ball.r&&user.x+user.width>ball.x-ball.r&&user.x<ball.x+ball.r;
+   }
+function collision2()
+{
+	 return comp.y<ball.y+ball.r&&comp.y+user.height>ball.y-ball.r&&comp.x+comp.width>ball.x-ball.r&&comp.x<ball.x+ball.r;
+}
+
+
+function game()
+{
+
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	render();
+
+	update();
+}
+
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e) {
+    if( e.key == "ArrowUp") {
+        rightPressed = true;
+    }
+    else if(e.key == "ArrowDown") {
+        leftPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+    if( e.key == "ArrowUp") {
+        rightPressed = false;
+    }
+    else if(e.key == "ArrowDown") {
+        leftPressed = false;
+    }
+}
+
+
+var interval = setInterval(game,10);
+
+	</script>
+	
+
+</body>
+</html>

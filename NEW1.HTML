@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>final try</title>
+</head>
+<body>
+<style type="text/css">
+	canvas{
+		background: #eee;
+	}
+</style>
+<canvas id="demo" width="1500" height="720"></canvas>
+<script type="text/javascript">
+	var canvas = document.getElementById("demo");
+	var ctx = canvas.getContext("2d");
+	var x = 750;
+	var y = 600;
+	var dx = -2;
+	var dy = -2;
+	var radi = 20;
+	var p_width = 150;
+	var p_height = 10;
+	var p_x=(canvas.width-p_width)/2;
+	var rightpress=false;
+	var leftpress=false;
+	function drawball(){
+       ctx.beginPath();
+       ctx.arc(x, y, radi, 0, Math.PI*2);
+       ctx.fillStyle = "#39004d";
+       ctx.fill();
+       ctx.closePath();
+} 
+     function drawp()
+     {
+       ctx.beginPath();
+       ctx.rect(p_x, canvas.height-p_height, p_width, p_height);
+       ctx.fillStyle="#39004d" ;     
+       ctx.fill();
+       ctx.closePath();
+     } 
+	
+	function draw()
+	{
+       
+       ctx.clearRect(0, 0, canvas.width, canvas.height);
+       drawball();
+       
+       drawp();
+       x += dx;
+       y += dy;
+       if(y+dy<radi)
+         dy=-dy;
+       if(y+dy>=(canvas.height-radi-p_height)&&x>p_x&&x<p_x+p_width)
+       	dy=-dy;
+       if(y+dy>canvas.height)
+       {
+       	alert("GAME OVER");
+       	clearInterval(interval);
+       	document.location.reload();
+       }
+
+
+       if(x+dx>canvas.width-radi||x+dx<radi)
+       dx=-dx;
+
+        if(rightpress&&(p_x+p_width)<canvas.width)
+          p_x += 4;
+        if(leftpress&&p_x>0)
+           p_x -= 4;    
+ 
+
+	}
+
+	document.addEventListener("keydown",keydownhandler,false);
+	document.addEventListener("keyup",keyuphandler,false);
+	function keydownhandler(e)
+	{
+         if(e.key=="ArrowRight")
+         	rightpress=true;
+         if (e.key=="ArrowLeft") {leftpress=true;}
+	}
+    function keyuphandler(e)
+    {
+    	if(e.key=="ArrowRight")
+    		rightpress=false;
+    	if(e.key=="ArrowLeft")
+    		leftpress=false;
+    } 
+
+
+      var interval = setInterval(draw, 8);
+
+</script>
+
+</body>
+</html>

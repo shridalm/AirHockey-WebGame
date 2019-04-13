@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>image</title>
+</head>
+<body>
+	<canvas id = "demo" width="720" heigh="640"></canvas>
+<style type="text/css">
+	canvas{
+		background: #eee;
+	}
+</style>
+<script type="text/javascript">
+	var canvas = document.getElementById("demo");
+	var ctx =canvas.getContext("2d");
+	var img =new Image();
+	
+	img.onload =  function(){
+ctx.drawImage(img, 0, 0, 50, 50);
+	}
+ img.src="https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjC5-Omu-_gAhUOTY8KHcReCKIQjRx6BAgBEAU&url=https%3A%2F%2Fwww.spriters-resource.com%2Fnes%2Fsupermariobros%2Fsheet%2F52571%2F&psig=AOvVaw0xulET7lOrpUZMEVxUOCAe&ust=1552028621212738";
+</script>
+
+</body>
+</html>
